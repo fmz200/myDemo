@@ -1,0 +1,37 @@
+
+spring:
+  datasource:
+    name: vueBlog  #数据库别名
+    url: jdbc:mysql://localhost:3306/vueBlog #url
+    username: root  #用户名
+    password: root1234  #密码
+    #driver-class-name: com.mysql.jdbc.Driver  #数据库链接驱动
+    driver-class-name: com.mysql.cj.jdbc.Driver  #数据库链接驱动
+
+#logging:
+  #日志存储地址
+  #file: "logs/config/demo-xx.log"
+
+#更换默认的8080端口
+server:
+  #端口号
+  port: 8081
+  #项目名，如果不设定，默认是 /
+  #context-path: /demo
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  #配置映射文件
+  type-aliases-package: com.soft.mydemo.bean #配置实体类
+
+logging:
+  level:
+    com.soft.mydemo: debug
+  #path: /Users/jackie/workspace/rome/
+  #file: springbootdemo.log
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: false  #开启优化，如果开启优化，在分页页码结果没有数据的时候,会显示有数据的页码数据
+  supportMethodsArguments: true #是否支持接口参数来传递分页参数，默认false
+  pageSizeZero: false #pageSize=0 返回所有
+  params: count=countSql

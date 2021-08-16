@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org./dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.soft.mydemo.mapper.SaleInfoMapper">
+
+    <select id="selectSales" parameterType="string" resultType="com.soft.mydemo.bean.SalesInfoBean">
+        SELECT T.uid saleId, T.username stuName
+        FROM T_USER T
+        WHERE T.UID = #{saleId}
+    </select>
+</mapper>
