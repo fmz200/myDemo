@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.util.TextUtils;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,7 @@ public class DouYinController {
     public static String DOU_YIN_BASE_URL = "https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=";
 
     public static void main(String[] args) throws Exception {
-        String url = "https://v.douyin.com/dRPkaeu/";
+        String url = "https://v.douyin.com/dNhdhR6/";
         parseVideoUrl(url);
     }
 
@@ -55,16 +56,23 @@ public class DouYinController {
             if (StringUtils.isEmpty(redirectUrl)) {
                 return null;
             }
-//10:42:35.615 [main] INFO com.soft.mydemo.controller.DouYinController - parseVideoUrl.redirectUrl is https://www.iesdouyin.com/share/video/6999205120957336865/?region=CN&mid=6924587721335868168&u_code=157eekbkm&titleType=title&did=MS4wLjABAAAAgFKWoW0AuTx7invBWeJaK3PWyShtR0UPtYPl-3_YILRQ94b0fhsDNrtphXYlfe7i&iid=MS4wLjABAAAA6d-qTxAXfRMtCkfrc0njkKAqi2ONmvGwFxmTpBB2BgsfEH75RaQl8BZMmiOq28W6&with_sec_did=1&timestamp=1629686338&utm_campaign=client_share&app=aweme&utm_medium=ios&tt_from=copy&utm_source=copy
+//10:42:35.615 [main] INFO com.soft.mydemo.controller.DouYinController - parseVideoUrl.redirectUrl is
+// https://www.iesdouyin.com/share/video/6999205120957336865/?region=CN&mid=6924587721335868168&u_code=157eekbkm&titleType=title&did=MS4wLjABAAAAgFKWoW0AuTx7invBWeJaK3PWyShtR0UPtYPl-3_YILRQ94b0fhsDNrtphXYlfe7i&iid=MS4wLjABAAAA6d-qTxAXfRMtCkfrc0njkKAqi2ONmvGwFxmTpBB2BgsfEH75RaQl8BZMmiOq28W6&with_sec_did=1&timestamp=1629686338&utm_campaign=client_share&app=aweme&utm_medium=ios&tt_from=copy&utm_source=copy
             // 2、拿到视频对应的 ItemId
-            String itemId = ""; //CommonUtils.matchNo(redirectUrl);
+            int video = redirectUrl.lastIndexOf("video");
+            int region = redirectUrl.lastIndexOf("region");
+            String itemId = redirectUrl.substring(video + 6, region - 2); //CommonUtils.matchNo(redirectUrl);
+            log.info("parseVideoUrl.itemId is {}", itemId);
 
             // 3、用 ItemId 拿视频的详细信息，包括无水印视频url
             StringBuilder sb = new StringBuilder();
             sb.append(DOU_YIN_BASE_URL).append(itemId);
             String videoResult = HttpClientUtil.doGet(sb.toString());
             DouYinResult dyResult = JSON.parseObject(videoResult, DouYinResult.class);
-
+            if (ObjectUtils.isEmpty(dyResult)) {
+                getLocation("https://aweme.snssdk.com/aweme/v1/play/?video_id=v0d00fg10000c4h2n6rc77udubsoigj0&ratio=720p&line=0");
+                return null;
+            }
             // 4、无水印视频 url
             String videoUrl = dyResult.getItem_list().get(0)
                     .getVideo().getPlay_addr().getUrl_list().get(0)
@@ -108,6 +116,7 @@ public class DouYinController {
             conn.setRequestProperty("User-agent", "ua"); // 模拟手机连接
             conn.connect();
             String location = conn.getHeaderField("Location");
+            log.debug("getLocation.location is {}", location);
             return location;
         } catch (Exception e) {
             e.printStackTrace();

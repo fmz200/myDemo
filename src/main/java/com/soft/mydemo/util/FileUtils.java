@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,7 +14,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
+import java.util.Collection;
+import java.util.Locale;
 
 public class FileUtils {
 
@@ -33,9 +38,9 @@ public class FileUtils {
     public static void download(String flag, String name, String downloadPath, HttpServletResponse resp) {
         BufferedInputStream bis = null;
         OutputStream os = null;
-        InputStream ins = null;
-        File file = null;
-        Long lengths = 0L;
+        InputStream ins;
+        File file;
+        long lengths;
         try {
             if (flag.equals("1")) {
                 ClassPathResource classPathResource = new ClassPathResource(downloadPath);
