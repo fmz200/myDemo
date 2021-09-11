@@ -11,6 +11,7 @@
     <groupId>com.soft</groupId>
     <artifactId>myDemo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>myDemo</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -28,6 +29,19 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!-- 移除嵌入式tomcat插件 -->
+<!--            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>-->
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -164,6 +178,14 @@
         </dependency>
 
     </dependencies>
+
+<!--    <repositories>
+        <repository>
+            <id>spring-maven-milestone</id>
+            <name>Spring Maven Milestone Repository</name>
+            <url>http://maven.springframework.org/milestone</url>
+        </repository>
+    </repositories>-->
 
     <build>
         <plugins>
