@@ -178,7 +178,6 @@ public class DouYinController {
     public static String decodeDyUrl(String url) {
         int start = url.indexOf("http");
         int end = url.lastIndexOf("/");
-        String decodeurl = url.substring(start, end);
-        return decodeurl;
+        return url.substring(start, end);
     }
 }

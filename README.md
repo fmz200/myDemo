@@ -1,31 +1,5 @@
 # myDemo
 
-# 项目效果图
-
-## 登陆页面
-
-![登录](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/login.png)
-
-## 文章列表
-
-![文章列表](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/article.png)
-
-## 发表文章
-
-![发表文章](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/post.png)
-
-## 用户管理
-
-![用户管理](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/usermana.png)
-
-## 栏目管理
-
-![栏目管理](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/category.png)
-
-## 数据统计
-
-![数据统计](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/datastatistics.png)
-
 # 技术栈
 
 ## 后端技术栈
@@ -103,3 +77,29 @@ MIT
 ## 其他
 
 Forked from https://github.com/lenve/VBlog ，进行二次开发，前后端分离成了两个项目。
+
+# 项目效果图
+
+## 登陆页面
+
+![登录](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/login.png)
+
+## 文章列表
+
+![文章列表](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/article.png)
+
+## 发表文章
+
+![发表文章](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/post.png)
+
+## 用户管理
+
+![用户管理](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/usermana.png)
+
+## 栏目管理
+
+![栏目管理](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/category.png)
+
+## 数据统计
+
+![数据统计](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/datastatistics.png)
