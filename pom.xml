@@ -172,6 +172,10 @@
             <artifactId>commons-io</artifactId>
             <version>2.7</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
 
     </dependencies>
 

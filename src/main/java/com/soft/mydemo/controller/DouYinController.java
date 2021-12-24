@@ -3,14 +3,14 @@ package com.soft.mydemo.controller;
 import com.alibaba.fastjson.JSON;
 import com.soft.mydemo.bean.douyin.DouYinBean;
 import com.soft.mydemo.bean.douyin.DouYinResult;
-import com.soft.mydemo.util.HttpClientUtil;
+import com.soft.mydemo.util.HttpRequest;
+import com.soft.mydemo.utils.FileDownloadUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.util.TextUtils;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,13 +27,13 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 @Controller
-@RequestMapping(value = "/douyin")
+@RequestMapping(value = "/douYin")
 public class DouYinController {
 
-    public static String DOU_YIN_BASE_URL = "https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=";
+    public static final String DOU_YIN_BASE_URL = "https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=";
 
     public static void main(String[] args) throws Exception {
-        String url = "https://v.douyin.com/dNhdhR6/";
+        String url = "https://v.douyin.com/8Fp5G6x/";//https://v.douyin.com/8Fp5G6x/
         parseVideoUrl(url);
     }
 
@@ -46,7 +46,8 @@ public class DouYinController {
      */
     @RequestMapping("/parseVideoUrl")
     @ResponseBody
-    public static String parseVideoUrl(@RequestBody String url) throws Exception {
+    public static String parseVideoUrl(String url) throws Exception {
+        log.info("parseVideoUrl.url is {}", url);
         DouYinBean douYinBean = new DouYinBean();
         try {
             url = URLDecoder.decode(url).replace("url=", "");
@@ -66,19 +67,16 @@ public class DouYinController {
 
             // 3、用 ItemId 拿视频的详细信息，包括无水印视频url
             StringBuilder sb = new StringBuilder();
-            sb.append(DOU_YIN_BASE_URL).append(itemId);
-            String videoResult = HttpClientUtil.doGet(sb.toString());
+            sb.append(DOU_YIN_BASE_URL).append(itemId);// https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=7045134641002466590
+            String videoResult = HttpRequest.sendGet(sb.toString(),"");
             DouYinResult dyResult = JSON.parseObject(videoResult, DouYinResult.class);
             if (ObjectUtils.isEmpty(dyResult)) {
-                getLocation("https://aweme.snssdk.com/aweme/v1/play/?video_id=v0d00fg10000c4h2n6rc77udubsoigj0&ratio=720p&line=0");
                 return null;
             }
             // 4、无水印视频 url
-            String videoUrl = dyResult.getItem_list().get(0)
-                    .getVideo().getPlay_addr().getUrl_list().get(0)
-                    .replace("playwm", "play");
-            String videoRedirectUrl = getLocation(videoUrl);
-            douYinBean.setVideoUrl(videoRedirectUrl);
+            String videoUrl = dyResult.getItem_list().get(0).getVideo().getPlay_addr().getUrl_list().get(0).replace("playwm", "play");
+            douYinBean.setVideoUrl(videoUrl);
+            FileDownloadUtils.httpDownload(videoUrl,"D:\\home\\02.mp4");
             /**
              * 5、音频 url
              */
@@ -97,6 +95,7 @@ public class DouYinController {
         } catch (Exception e) {
             log.error("parseVideoUrl has an error...", e);
         }
+        log.info("parseVideoUrl douYinResult is {}", douYinBean);
         return JSON.toJSONString(douYinBean);
     }
 
