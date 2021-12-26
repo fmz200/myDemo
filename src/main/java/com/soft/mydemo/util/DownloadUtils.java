@@ -1,11 +1,7 @@
 package com.soft.mydemo.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,24 +10,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.URLEncoder;
-import java.util.Collection;
-import java.util.Locale;
 
-public class FileUtils {
-
-    //定义一个全局的记录器，通过LoggerFactory获取
-    protected static Logger logger = LoggerFactory.getLogger(FileUtils.class);
-
-    // 单次传送最大字节数20M。
-    private final static int maxsize_once;
-
-    static {
-        maxsize_once = 1024 * 1024 * 20;
-    }
-
+public class DownloadUtils {
     /**
+     * 下载文件
+     *
      * @param name         文件名字
      * @param downloadPath 文件下载路径
      */
@@ -52,11 +36,6 @@ public class FileUtils {
                 ins = new FileInputStream(file);
             }
 
-            if (downloadPath.startsWith("template/import")) {
-                int sufix = downloadPath.indexOf(".");
-                name += downloadPath.substring(sufix);
-            }
-
             resp.reset();
             resp.setContentType("application/octet-stream");
             resp.setCharacterEncoding("utf-8");
@@ -67,7 +46,7 @@ public class FileUtils {
 
             os = resp.getOutputStream();
             bis = new BufferedInputStream(ins);
-            int i = 0;
+            int i;
             while ((i = bis.read(buff)) != -1) {
                 os.write(buff, 0, i);
                 os.flush();
@@ -82,33 +61,28 @@ public class FileUtils {
     /**
      * 返回流
      *
-     * @param downloadPath
+     * @param downloadPath 文件路径
      */
     public static byte[] downloadIO(String downloadPath) {
-        byte[] filebyte = null;
+        byte[] fileBytes = null;
 
         // 读取文件字节流
         ByteArrayOutputStream fileStream = new ByteArrayOutputStream(1024);
         FileInputStream file = null;
         try {
             file = new FileInputStream(downloadPath);
-            int len = 0;
-            byte[] readbuff = new byte[1024];
-            while ((len = file.read(readbuff, 0, readbuff.length)) != -1) {
-                fileStream.write(readbuff, 0, len);
+            int len;
+            byte[] bytes = new byte[1024];
+            while ((len = file.read(bytes, 0, bytes.length)) != -1) {
+                fileStream.write(bytes, 0, len);
             }
-            // 构建返回文件字节信息。超过20M, 一次只返回20M。
-//	        final byte[] fileBuff = fileStream.toByteArray();
-
-//	        filebyte = Arrays.copyOfRange(fileBuff, 0, fileBuff.length);
-            filebyte = fileStream.toByteArray();
+            fileBytes = fileStream.toByteArray();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
             IOUtil.closeQuietly(file, fileStream);
         }
-        return filebyte;
+        return fileBytes;
     }
 
 }

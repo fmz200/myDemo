@@ -16,9 +16,9 @@ public class FileDownloadUtils {
     /**
      * 文件下载
      *
-     * @param httpUrl
-     * @param saveFile
-     * @return
+     * @param httpUrl 文件链接
+     * @param saveFile 存储地址
+     * @return 是否成功
      */
     public static boolean httpDownload(String httpUrl, String saveFile) {
         // 1.下载网络文件
@@ -46,9 +46,6 @@ public class FileDownloadUtils {
             inStream.close();
             fs.close();
             return true;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return false;
         } catch (IOException e) {
             e.printStackTrace();
             return false;

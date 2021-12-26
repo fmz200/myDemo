@@ -21,7 +21,7 @@ public class HttpRequest {
      * @return URL 所代表远程资源的响应结果
      */
     public static String sendGet(String url, String param) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         BufferedReader in = null;
         try {
             if (!StringUtils.isEmptyOrWhitespace(param)) {
@@ -43,11 +43,10 @@ public class HttpRequest {
                 System.out.println(key + "--->" + map.get(key));
             }
             // 定义 BufferedReader输入流来读取URL的响应
-            in = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
-                result += line;
+                result.append(line);
             }
         } catch (Exception e) {
             System.err.println("发送GET请求出现异常！" + e);
@@ -61,7 +60,7 @@ public class HttpRequest {
                 e2.printStackTrace();
             }
         }
-        return result;
+        return result.toString();
     }
 
     /**
@@ -74,7 +73,7 @@ public class HttpRequest {
     public static String sendPost(String url, String param) {
         PrintWriter out = null;
         BufferedReader in = null;
-        String result = "";
+        StringBuilder result = new StringBuilder();
         try {
             URL realUrl = new URL(url);
             // 打开和URL之间的连接
@@ -98,7 +97,7 @@ public class HttpRequest {
                     new InputStreamReader(conn.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
-                result += line;
+                result.append(line);
             }
         } catch (Exception e) {
             System.out.println("发送 POST 请求出现异常！" + e);
@@ -115,6 +114,6 @@ public class HttpRequest {
                 ex.printStackTrace();
             }
         }
-        return result;
+        return result.toString();
     }
 }
