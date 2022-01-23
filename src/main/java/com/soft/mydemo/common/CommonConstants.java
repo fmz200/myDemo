@@ -40,4 +40,8 @@ public class CommonConstants {
      * 失败码
      */
     public static final Integer CODE_FAIL = -1;
+
+    public static final String SUCCESS = "success";
+
+    public static final String ERROR = "error";
 }

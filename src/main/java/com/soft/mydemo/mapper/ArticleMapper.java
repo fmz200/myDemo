@@ -15,8 +15,7 @@ public interface ArticleMapper {
 
     int updateArticle(ArticleInfoBean article);
 
-    List<ArticleInfoBean> getArticleByState(@Param("state") Integer state, @Param("uid") Long uid,
-                                            @Param("keywords") String keywords);
+    List<ArticleInfoBean> getArticleByState(ArticleInfoBean params);
 
     List<ArticleInfoBean> getArticleByStateByAdmin(@Param("start") int start, @Param("count") Integer count, @Param("keywords") String keywords);
 

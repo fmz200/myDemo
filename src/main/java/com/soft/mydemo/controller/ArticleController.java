@@ -1,5 +1,6 @@
 package com.soft.mydemo.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.soft.mydemo.bean.ArticleInfoBean;
 import com.soft.mydemo.bean.RespBean;
 import com.soft.mydemo.common.CommonConstants;
@@ -7,6 +8,7 @@ import com.soft.mydemo.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +36,10 @@ import java.util.UUID;
 @RequestMapping("/article")
 public class ArticleController {
 
+    // 上传路径
+    @Value("${upload.blog}")
+    private String blog;
+
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
     @Autowired
@@ -43,9 +49,9 @@ public class ArticleController {
     public RespBean addNewArticle(ArticleInfoBean article) {
         int result = articleService.addNewArticle(article);
         if (StringUtils.equals(CommonConstants.CODE_SUCCESS, result)) {
-            return new RespBean("success", article.getId() + "");
+            return new RespBean(CommonConstants.SUCCESS, article.getId() + "");
         } else {
-            return new RespBean("error", article.getState() == 0 ? "文章保存失败!" : "文章发表失败!");
+            return new RespBean(CommonConstants.ERROR, article.getState() == 0 ? "文章保存失败!" : "文章发表失败!");
         }
     }
 
@@ -57,9 +63,9 @@ public class ArticleController {
     @RequestMapping(value = "/uploadimg", method = RequestMethod.POST)
     public RespBean uploadImg(HttpServletRequest req, MultipartFile image) {
         StringBuffer url = new StringBuffer();
-        String filePath = "/blogimg/" + sdf.format(new Date());
+        String filePath = blog + sdf.format(new Date());
         String imgFolderPath = req.getServletContext().getRealPath(filePath);
-        File imgFolder = new File(imgFolderPath);
+        File imgFolder = new File(filePath);
         if (!imgFolder.exists()) {
             boolean mkdirs = imgFolder.mkdirs();
             log.info("mkdirs is {}", mkdirs);
@@ -81,21 +87,20 @@ public class ArticleController {
         String imgName = UUID.randomUUID() + "_" + image.getOriginalFilename().replaceAll(" ", "");
         try {
             IOUtils.write(image.getBytes(), new FileOutputStream(new File(imgFolder, imgName)));
-            url.append("/").append(imgName);
-            return new RespBean("success", url.toString());
+            // url.append("/").append(imgName);
+            filePath = filePath + "/"+imgName;
+            return new RespBean("success", filePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return new RespBean("error", "上传失败!");
     }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public Map<String, Object> getArticleByState(@RequestParam(value = "state", defaultValue = "-1") Integer state,
-                                                 @RequestParam(value = "page", defaultValue = "1") Integer pageNum,
-                                                 @RequestParam(value = "count", defaultValue = "6") Integer pageSize,
-                                                 String keywords) {
-        log.info("article.all start... state is {}, page is {}, count is {}", state, pageNum, pageSize);
-        return articleService.getArticleByState(state, pageNum, pageSize, keywords);
+    @RequestMapping(value = "/all")
+    public Map<String, Object> getArticleByState(ArticleInfoBean params) {
+        System.err.println(blog);
+        log.info("article.all start... params is {}", JSON.toJSONString(params));
+        return articleService.getArticleByState(params);
     }
 
     @RequestMapping(value = "/{aid}", method = RequestMethod.GET)

@@ -100,10 +100,11 @@ public class ArticleService {
         return content;
     }
 
-    public Map<String, Object> getArticleByState(Integer state, Integer pageNum, Integer pageSize, String keywords) {
+    public Map<String, Object> getArticleByState(ArticleInfoBean params) {
         Long uid = UserUtils.getCurrentUser().getId();
-        PageHelper.startPage(pageNum, pageSize);
-        List<ArticleInfoBean> articles = articleMapper.getArticleByState(state, uid, keywords);
+        params.setUid(uid);
+        PageHelper.startPage(params.getPage(), params.getCount());
+        List<ArticleInfoBean> articles = articleMapper.getArticleByState(params);
         PageInfo<ArticleInfoBean> pageInfo = new PageInfo<>(articles);
 
         Map<String, Object> map = new HashMap<>();

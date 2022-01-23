@@ -59,7 +59,7 @@
         WHERE id=#{id}
     </update>
 
-    <select id="getArticleByState" resultType="com.soft.mydemo.bean.ArticleInfoBean">
+    <select id="getArticleByState" parameterType="com.soft.mydemo.bean.ArticleInfoBean" resultType="com.soft.mydemo.bean.ArticleInfoBean">
         SELECT a.id,
             a.`title`,
             a.summary,
@@ -82,10 +82,28 @@
         <if test="state==-2">
             and a.state=1
         </if>
-        <if test="keywords!=null">
-            AND title LIKE concat('%',#{keywords},'%')
+        <if test="title != '' and title != null">
+            AND a.title LIKE concat('%',#{title},'%')
         </if>
-        ORDER BY a.publishDate DESC
+        <if test="nickname != '' and nickname != null">
+            AND u.nickname = #{nickname}
+        </if>
+        <if test="cid != '' and cid != null">
+            AND c.id = #{cid}
+        </if>
+        <if test="publishDateStart != '' and publishDateStart != null">
+            AND a.publishDate <![CDATA[ >= ]]> #{publishDateStart}
+        </if>
+        <if test="publishDateEnd != '' and publishDateEnd != null">
+            AND a.publishDate <![CDATA[ <= ]]> #{publishDateEnd}
+        </if>
+        <if test="editTimeStart != '' and editTimeStart != null">
+            AND a.editTime <![CDATA[ >= ]]> #{editTimeStart}
+        </if>
+        <if test="editTimeEnd != '' and editTimeEnd != null">
+            AND a.editTime <![CDATA[ <= ]]> #{editTimeEnd}
+        </if>
+        ORDER BY a.publishDate, a.editTime
     </select>
 
     <select id="getArticleByStateByAdmin" resultType="com.soft.mydemo.bean.ArticleInfoBean">

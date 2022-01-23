@@ -27,4 +27,11 @@ public class ArticleInfoBean {
     private List<TagsInfoBean> tags;
     private String stateStr;
     private String source; // 页面操作类型，从哪个页面跳转而来
+    private String publishDateStart;
+    private String publishDateEnd;
+    private String editTimeStart;
+    private String editTimeEnd;
+
+    private Integer page; // pageNum
+    private Integer count; // pageSize
 }
