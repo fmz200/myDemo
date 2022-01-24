@@ -272,6 +272,42 @@ INSERT INTO `user` VALUES ('19', 'zuolengchan', '左冷禅', '202cb962ac59075b96
 INSERT INTO `user` VALUES ('20', 'fengqingyang', '风清扬', '202cb962ac59075b964b07152d234b70', '1', 'fengqingyang@qq.com', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1514093920321&di=913e88c23f382933ef430024afd9128a&imgtype=0&src=http%3A%2F%2Fp.3761.com%2Fpic%2F9771429316733.jpg', '2017-12-24 06:30:46');
 
 -- ----------------------------
+-- Table structure for filesInfo
+-- ----------------------------
+DROP TABLE IF EXISTS `filesInfo`;
+CREATE TABLE `filesInfo` (
+    `fileId` varchar(64) NOT NULL  COMMENT '文件唯一标识',
+    `fileName` varchar(64) DEFAULT NULL COMMENT '文件名',
+    `fileType` varchar(10) DEFAULT NULL COMMENT '文件类型',
+    `fileSize` varchar(10) DEFAULT NULL COMMENT '文件大小',
+    `filePtah` varchar(100) DEFAULT NULL COMMENT '文件路径',
+    `uploadTime` datetime DEFAULT NULL COMMENT '上传时间',
+    `editTime` datetime DEFAULT NULL COMMENT '修改时间',
+    `attrUser` varchar(64) DEFAULT NULL COMMENT '归属用户',
+    `categoryId` varchar(10) DEFAULT NULL COMMENT '所属分类',
+    `downloadTimes` int(11) DEFAULT NULL COMMENT '下载次数',
+    `state` int(2) DEFAULT NULL COMMENT '0表示无效，1表示有效',
+    `remark` varchar(100) DEFAULT NULL COMMENT '备注',
+    PRIMARY KEY (`fileId`)
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of filesInfo
+-- ----------------------------
+INSERT INTO `filesInfo` VALUES ('fjwefwefwe01', 'Vue22', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2017-12-24 06:30:46', '2021-12-30 06:30:46', 'linghu', '90', '9', 1, 'test测试');
+INSERT INTO `filesInfo` VALUES ('58', '人生感悟', '1', '120M', 'd/dwd/dwe/ewe/fr/image.jpg', '2017-12-24 06:30:46', '2021-12-30 06:30:46', 'linghu', '90', '9', 1, 'test测试');
+INSERT INTO `filesInfo` VALUES ('60', 'JavaEE', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2017-12-24 06:30:46', '2021-12-30 06:30:46', 'linghu', '90', '9', 1, 'test测试');
+INSERT INTO `filesInfo` VALUES ('61', 'Git', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2017-12-24 06:30:46', '2021-12-30 06:30:46', 'linghu', '90', '9', 1, 'test测试');
+INSERT INTO `filesInfo` VALUES ('62', 'Linux', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-21 06:30:46', '2021-12-30 06:30:46', 'linghu', '90', '9', 1, 'test测试');
+INSERT INTO `filesInfo` VALUES ('64', 'MongoDB', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-22 06:30:46', '2021-12-30 06:30:46', 'sang', '90', '9', 1, 'test测试');
+INSERT INTO `filesInfo` VALUES ('fjwefwefwe02', 'Vue22', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-23 06:30:46', '2021-12-25 06:30:46', 'sang', '90', '9', 1, 'test测试');
+INSERT INTO `filesInfo` VALUES ('580', '人生感悟', '1', '120M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-24 06:30:46', '2021-12-30 06:30:46', 'sang', '90', '9', 1, 'test测试');
+INSERT INTO `filesInfo` VALUES ('600', '佛挡杀佛', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-24 06:30:46', '2021-12-31 06:30:46', 'sang', '90', '9', 1, 'test测试');
+INSERT INTO `filesInfo` VALUES ('610', '分割', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-24 06:30:46', '2022-01-30 06:30:46', 'chuliuxiang', '90', '9', 1, 'test测试');
+INSERT INTO `filesInfo` VALUES ('620', 'Greg', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-24 06:30:46', '2021-12-30 06:30:46', 'chuliuxiang', '90', '9', 1, 'test测试');
+INSERT INTO `filesInfo` VALUES ('640', '各个', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-24 06:30:46', '2021-12-30 06:30:46', 'chuliuxiang', '90', '9', 1, 'test测试');
+
+-- ----------------------------
 -- View structure for pvview
 -- ----------------------------
 DROP VIEW IF EXISTS `pvview`;
