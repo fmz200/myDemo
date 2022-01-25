@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.soft.mydemo.bean.douyin.DouYinBean;
 import com.soft.mydemo.bean.douyin.DouYinResult;
 import com.soft.mydemo.util.HttpRequest;
-import com.soft.mydemo.util.DownloadUtils;
 import com.soft.mydemo.utils.FileDownloadUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.util.TextUtils;
@@ -81,7 +80,7 @@ public class DouYinController {
             // 4.1 下载抖音视频到本地指定的文件夹
             boolean b = FileDownloadUtils.httpDownload(videoUrl, "D:\\home\\02.mp4");
             // 4.2 下载抖音视频到浏览器页面
-            DownloadUtils.download("0", itemId, videoUrl, response);
+            // DownloadUtils.download("0", itemId, videoUrl, response);
 
             log.info("parseVideoUrl.b is {}", b);
 

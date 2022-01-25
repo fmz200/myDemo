@@ -3,6 +3,7 @@ package com.soft.mydemo.controller;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.page.PageMethod;
+import com.soft.mydemo.bean.RespBean;
 import com.soft.mydemo.bean.filesInfo.FilesInfoBean;
 import com.soft.mydemo.bean.filesInfo.InterfaceInfoListBean;
 import com.soft.mydemo.mapper.FilesInfoMapper;
@@ -11,14 +12,17 @@ import com.soft.mydemo.util.TimeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -43,6 +47,10 @@ import java.util.zip.ZipOutputStream;
 @RequestMapping("/filesController")
 public class FilesController {
 
+    // 上传路径
+    @Value("${upload.blog}")
+    private String blog;
+
     @Autowired
     FilesInfoMapper filesInfoMapper;
 
@@ -66,6 +74,42 @@ public class FilesController {
         map.put("filesInfoList", filesInfoList);
         log.debug("queryFilesInfo end... map is {}", JSON.toJSONString(map));
         return map;
+    }
+
+    @RequestMapping(value = "/uploadFiles")
+    public RespBean uploadFiles(HttpServletRequest req, MultipartFile image) {
+        StringBuilder url = new StringBuilder();
+        String filePath = blog + TimeUtils.getCurrentDateString();
+        String imgFolderPath = req.getServletContext().getRealPath(filePath);
+        File imgFolder = new File(filePath);
+        if (!imgFolder.exists()) {
+            boolean mkdirs = imgFolder.mkdirs();
+            log.info("mkdirs is {}", mkdirs);
+        }
+
+        String serverName = req.getServerName();
+        int serverPort = req.getServerPort();
+        String contextPath = req.getContextPath();
+        String pathInfo = req.getPathInfo();
+        String pathTranslated = req.getPathTranslated();
+        log.debug("serverName is {},serverPort is {},contextPath is {} ,{} ,{}", serverName, serverPort, contextPath, pathInfo, pathTranslated);
+        url.append(req.getScheme())
+                .append("://")
+                .append(req.getServerName())
+                .append(":")
+                .append(req.getServerPort())
+                .append(req.getContextPath())
+                .append(filePath);
+        String imgName = UUID.randomUUID() + "_" + image.getOriginalFilename().replaceAll(" ", "");
+        try {
+            org.apache.commons.io.IOUtils.write(image.getBytes(), new FileOutputStream(new File(imgFolder, imgName)));
+            // url.append("/").append(imgName);
+            filePath = filePath + "/"+imgName;
+            return new RespBean("success", filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new RespBean("error", "上传失败!");
     }
 
     /**
