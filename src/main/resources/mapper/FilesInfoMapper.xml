@@ -55,6 +55,33 @@
 		order by t.attrUser, t.uploadTime, t.editTime desc
 	</select>
 
+	<insert id="insertFilesInfo" parameterType="com.soft.mydemo.bean.filesInfo.FilesInfoBean">
+        insert into filesInfo (
+			fileId,
+			fileName,
+			fileType,
+			fileSize,
+			filePtah,
+			uploadTime,
+			attrUser,
+			categoryId,
+			state,
+			remark
+		)
+		values (
+			#{fileId},
+			#{fileName},
+			#{fileType},
+			#{fileSize},
+			#{filePtah},
+			sysdate(),
+			#{attrUser},
+			#{categoryId},
+			#{state},
+			#{remark}
+		)
+	</insert>
+
 	<select id="queryFilesInfoForOne"
 			parameterType="java.lang.String"
 			resultType="com.soft.mydemo.bean.filesInfo.FilesInfoBean" >
@@ -74,4 +101,11 @@
 		from filesInfo t
 		where t.fileId = #{fileId}
 	</select>
+
+	<update id="updateFileDownloadTimes" parameterType="java.lang.String">
+		update filesInfo t
+		set t.downloadTimes = t.downloadTimes + 1
+		where t.fileId = #{fileId}
+	</update>
+
 </mapper>

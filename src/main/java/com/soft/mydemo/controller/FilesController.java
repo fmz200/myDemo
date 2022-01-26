@@ -9,6 +9,7 @@ import com.soft.mydemo.bean.filesInfo.InterfaceInfoListBean;
 import com.soft.mydemo.mapper.FilesInfoMapper;
 import com.soft.mydemo.util.FileUtils;
 import com.soft.mydemo.util.TimeUtils;
+import com.soft.mydemo.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -77,39 +77,43 @@ public class FilesController {
     }
 
     @RequestMapping(value = "/uploadFiles")
-    public RespBean uploadFiles(HttpServletRequest req, MultipartFile image) {
-        StringBuilder url = new StringBuilder();
+    public RespBean uploadFiles(MultipartFile file) {
+        log.info("uploadFiles.file is {}", file);
+        if (ObjectUtils.isEmpty(file)) {
+            return new RespBean("400", "未获取到文件!");
+        }
         String filePath = blog + TimeUtils.getCurrentDateString();
-        String imgFolderPath = req.getServletContext().getRealPath(filePath);
         File imgFolder = new File(filePath);
         if (!imgFolder.exists()) {
             boolean mkdirs = imgFolder.mkdirs();
             log.info("mkdirs is {}", mkdirs);
         }
-
-        String serverName = req.getServerName();
-        int serverPort = req.getServerPort();
-        String contextPath = req.getContextPath();
-        String pathInfo = req.getPathInfo();
-        String pathTranslated = req.getPathTranslated();
-        log.debug("serverName is {},serverPort is {},contextPath is {} ,{} ,{}", serverName, serverPort, contextPath, pathInfo, pathTranslated);
-        url.append(req.getScheme())
-                .append("://")
-                .append(req.getServerName())
-                .append(":")
-                .append(req.getServerPort())
-                .append(req.getContextPath())
-                .append(filePath);
-        String imgName = UUID.randomUUID() + "_" + image.getOriginalFilename().replaceAll(" ", "");
+        String fileId = String.valueOf(UUID.randomUUID()).replace("-", "");
+        String filename = file.getOriginalFilename();
         try {
-            org.apache.commons.io.IOUtils.write(image.getBytes(), new FileOutputStream(new File(imgFolder, imgName)));
-            // url.append("/").append(imgName);
-            filePath = filePath + "/"+imgName;
-            return new RespBean("success", filePath);
+            org.apache.commons.io.IOUtils.write(file.getBytes(), new FileOutputStream(new File(imgFolder, filename)));
+            filePath = String.format("%s/%s", filePath, filename);
+
+            FilesInfoBean filesInfoBean = new FilesInfoBean();
+            filesInfoBean.setFileId(fileId);
+            filesInfoBean.setFileName(filename);
+            filesInfoBean.setFileType("");
+            filesInfoBean.setFileSize("");
+            filesInfoBean.setFilePtah(filePath);
+            filesInfoBean.setUploadTime(TimeUtils.getCurrDateString());
+            filesInfoBean.setAttrUser(String.valueOf(UserUtils.getCurrentUser().getId()));
+            filesInfoBean.setState("1");
+            filesInfoMapper.insertFilesInfo(filesInfoBean);
+
+            return new RespBean("200", filePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new RespBean("error", "上传失败!");
+        return new RespBean("500", "上传失败!");
+    }
+
+    public void saveFileInfo(String uuid) {
+
     }
 
     /**
@@ -117,14 +121,13 @@ public class FilesController {
      *
      * @param infoBeanList 请求报文
      */
-    @RequestMapping(value = "/downloadInterfaceLogs")
+    @RequestMapping(value = "/downloadFiles")
     public void downloadFiles(InterfaceInfoListBean infoBeanList, HttpServletResponse response) {
-        log.debug("downloadInterfaceLogs start... infoBeanList is {}", infoBeanList);
+        log.debug("downloadFiles start... infoBeanList is {}", infoBeanList);
         if (ObjectUtils.isEmpty(infoBeanList) || (StringUtils.isEmpty(infoBeanList.getParamListString())
-                && CollectionUtils.isEmpty(infoBeanList.getInterfaceInfoBeanList()))) {
-            log.debug("downloadInterfaceLogs end... infoBeanList is empty");
+                && CollectionUtils.isEmpty(infoBeanList.getFilesInfoList()))) {
+            log.debug("downloadFiles end... infoBeanList is empty");
             return;
-            //return JSONResult("未获取到页面参数!", 400);
         }
 
         try {
@@ -135,27 +138,26 @@ public class FilesController {
             }
             String zipID = UUID.randomUUID().toString().replace("-", "");
             // 临时文件，下载后自动删除
-            String zipFilePath = "D:\\interfaceLogZip" + zipID + ".zip";
+            String zipFilePath = "D:\\filesZip" + zipID + ".zip";
             ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(zipFilePath));
             BufferedOutputStream bos = new BufferedOutputStream(zipOut);
-            for (String uuid : stringList) {
+            for (String fileId : stringList) {
                 //下载
-                FilesInfoBean logForOne = filesInfoMapper.queryFilesInfoForOne(uuid);
-                log.debug("downloadInterfaceLogs.logForOne is {}", logForOne);
+                FilesInfoBean logForOne = filesInfoMapper.queryFilesInfoForOne(fileId);
+                log.debug("downloadFiles.logForOne is {}", logForOne);
 
                 String downloadPath = logForOne.getFilePtah();
                 // 下载路径为空
                 if (StringUtils.isEmpty(downloadPath)) {
                     continue;
                 }
-                // downloadPath = "D:\\home\\upload\\rg\\01\\20210622\\1398.docx";
                 byte[] buffer = FileUtils.downloadIO(downloadPath);
                 if (buffer == null) {
-                    log.debug("downloadInterfaceLogs.buffer is empty,uuid is {}", logForOne.getFileId());
+                    log.debug("downloadFiles.buffer is empty,uuid is {}", logForOne.getFileId());
                     continue;
                 }
                 BufferedInputStream bis = new BufferedInputStream(new ByteArrayInputStream(buffer));
-                String fileName = logForOne.getFileId() + "_" + logForOne.getFileName() + downloadPath.substring(downloadPath.lastIndexOf(".") - 1);
+                String fileName = logForOne.getFileName();
                 zipOut.putNextEntry(new ZipEntry(fileName));
 
                 int len;
@@ -165,10 +167,13 @@ public class FilesController {
                 }
                 bos.flush();
                 bis.close();
+
+                // 更新下载次数
+                filesInfoMapper.updateFileDownloadTimes(fileId);
             }
             bos.close();
             // 最终下载的文件名
-            String downloadFileName = TimeUtils.getCurrTimeString() + "日志文件.zip";
+            String downloadFileName = TimeUtils.getCurrTimeString() + "文件.zip";
             response.setContentType("application/zip;charset=UTF-8");
             response.setHeader("Cache-Control", "no-cache");
             response.setHeader("Content-Disposition", "attchment;filename=" + URLEncoder.encode(downloadFileName, "utf-8"));
@@ -181,15 +186,11 @@ public class FilesController {
             outputStream.flush();
             //下载完成之后，删掉这个zip包
             File fileTempZip = new File(zipFilePath);
-            boolean delete = fileTempZip.delete();
-            // 压缩完成后,关闭压缩流
-            // zipOut.hashCode();
+            fileTempZip.delete();
         } catch (IOException e) {
-            log.error("downloadInterfaceLogs error...", e);
-            //return JSONResult("下载失败!" + e, 500);
+            log.error("downloadFiles error...", e);
         }
-        log.debug("downloadInterfaceLogs end...");
-        //return JSONResult("下载成功!", 200);
+        log.debug("downloadFiles end...");
     }
 
     /**

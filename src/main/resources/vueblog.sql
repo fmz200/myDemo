@@ -285,7 +285,7 @@ CREATE TABLE `filesInfo` (
     `editTime` datetime DEFAULT NULL COMMENT '修改时间',
     `attrUser` varchar(64) DEFAULT NULL COMMENT '归属用户',
     `categoryId` varchar(10) DEFAULT NULL COMMENT '所属分类',
-    `downloadTimes` int(11) DEFAULT NULL COMMENT '下载次数',
+    `downloadTimes` int(11) DEFAULT 0 COMMENT '下载次数',
     `state` int(2) DEFAULT NULL COMMENT '0表示无效，1表示有效',
     `remark` varchar(100) DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`fileId`)

@@ -14,7 +14,7 @@ public class InterfaceInfoListBean {
     private String paramListString;
 
     // url直接调用
-    private List<FilesInfoBean> interfaceInfoBeanList;
+    private List<FilesInfoBean> filesInfoList;
 
     public List<String> uuidSplit() {
         List<String> list = new ArrayList<>();

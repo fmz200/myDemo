@@ -10,5 +10,9 @@ public interface FilesInfoMapper {
 
     List<FilesInfoBean> queryFilesInfo(FilesInfoBean interfaceInfoBean);
 
-    FilesInfoBean queryFilesInfoForOne(String uuid);
+    void insertFilesInfo(FilesInfoBean interfaceInfoBean);
+
+    FilesInfoBean queryFilesInfoForOne(String fileId);
+
+    void updateFileDownloadTimes(String fileId);
 }
