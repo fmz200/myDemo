@@ -13,6 +13,12 @@ import java.util.Random;
 
 public class TimeUtils {
 
+    public static final String DATEFORMAT_01 = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATEFORMAT_02 = "yyyyMMddHHmmss";
+    public static final String DATEFORMAT_03 = "yyyyMMdd";
+    public static final String DATEFORMAT_04 = "yyyy";
+    public static final String DATEFORMAT_05 = "yyyy-mm-dd";
+
     /**
      * 获取当前系统时间
      *
@@ -22,7 +28,7 @@ public class TimeUtils {
         Calendar ca = Calendar.getInstance();
         Date date = ca.getTime();
 
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMddHHmmss");
+        SimpleDateFormat fmt = new SimpleDateFormat(DATEFORMAT_02);
         return fmt.format(date);
     }
 
@@ -35,7 +41,7 @@ public class TimeUtils {
         Calendar ca = Calendar.getInstance();
         Date date = ca.getTime();
 
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat fmt = new SimpleDateFormat(DATEFORMAT_01);
         return fmt.format(date);
     }
 
@@ -47,7 +53,7 @@ public class TimeUtils {
     public static String getCurrentDateString() {
         Calendar ca = Calendar.getInstance();
         Date date = ca.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATEFORMAT_03);
         return sdf.format(date);
     }
 
@@ -59,7 +65,7 @@ public class TimeUtils {
     public static String getCurrentYear() {
         Calendar ca = Calendar.getInstance();
         Date date = ca.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATEFORMAT_04);
         return sdf.format(date);
     }
 
@@ -115,17 +121,16 @@ public class TimeUtils {
      */
     public static boolean compareDate(String source, String target) {
         boolean result = true;
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat format = new SimpleDateFormat(DATEFORMAT_05);
         try {
             Date sourceDate = format.parse(source);
             Date targetDate = format.parse(target);
             if (sourceDate.compareTo(targetDate) > 0) {
                 result = false;
             }
-        } catch (ParseException e) {
-            result = true;
+        } catch (ParseException ignored) {
+            result = false;
         }
-
         return result;
     }
 
@@ -172,16 +177,16 @@ public class TimeUtils {
      * @return
      */
     public static boolean isCurrentQuarter(String jd) {
-        boolean result = true;
+        boolean result;
         LocalDate ldt = LocalDate.now();
         if (ldt.isBefore(ldt.with(Month.APRIL).withDayOfMonth(1))) {
-            result = "一季度".equals(jd) ? true : false;
+            result = "一季度".equals(jd);
         } else if (ldt.isBefore(ldt.with(Month.JULY).withDayOfMonth(1))) {
-            result = "二季度".equals(jd) ? true : false;
+            result = "二季度".equals(jd);
         } else if (ldt.isBefore(ldt.with(Month.OCTOBER).withDayOfMonth(1))) {
-            result = "三季度".equals(jd) ? true : false;
+            result = "三季度".equals(jd);
         } else {
-            result = "四季度".equals(jd) ? true : false;
+            result = "四季度".equals(jd);
         }
         return result;
     }
@@ -192,7 +197,7 @@ public class TimeUtils {
      * @return
      */
     public static String getCurrentQuarter() {
-        String result = "0";
+        String result;
         LocalDate ldt = LocalDate.now();
         if (ldt.isBefore(ldt.with(Month.APRIL).withDayOfMonth(1))) {
             result = "1";
@@ -224,9 +229,9 @@ public class TimeUtils {
      */
     public static boolean isLastDayOfMonth() {
         boolean result = false;
-        int MaxDayOfMonth = LocalDate.now().lengthOfMonth();
+        int maxDayOfMonth = LocalDate.now().lengthOfMonth();
         int dayOfMonth = LocalDate.now().getDayOfMonth();
-        if (MaxDayOfMonth == dayOfMonth) {
+        if (maxDayOfMonth == dayOfMonth) {
             result = true;
         }
         return result;
