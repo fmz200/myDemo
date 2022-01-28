@@ -15,4 +15,6 @@ public interface FilesInfoMapper {
     FilesInfoBean queryFilesInfoForOne(String fileId);
 
     void updateFileDownloadTimes(String fileId);
+
+    void updateFileState(List<String> fileIdList);
 }

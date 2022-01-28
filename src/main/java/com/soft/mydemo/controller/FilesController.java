@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,8 +113,15 @@ public class FilesController {
         return new RespBean("500", "上传失败!");
     }
 
-    public void saveFileInfo(String uuid) {
-
+    @RequestMapping(value = "/deleteFiles")
+    public RespBean deleteFiles(String fileIds) {
+        log.debug("deleteFile start... fileIds is {}", fileIds);
+        if (StringUtils.isEmpty(fileIds)) {
+            return new RespBean("400", "未获取到需要删除的文件信息!");
+        }
+        List<String> fileIdList = Arrays.asList(fileIds.split(","));
+        filesInfoMapper.updateFileState(fileIdList);
+        return new RespBean("200", "删除成功!");
     }
 
     /**

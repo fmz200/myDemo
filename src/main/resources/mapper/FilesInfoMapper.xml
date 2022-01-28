@@ -52,7 +52,7 @@
 				and t.state = #{state}
 			</if>
 		</where>
-		order by t.attrUser, t.uploadTime, t.editTime desc
+		order by t.uploadTime, t.editTime
 	</select>
 
 	<insert id="insertFilesInfo" parameterType="com.soft.mydemo.bean.filesInfo.FilesInfoBean">
@@ -108,4 +108,12 @@
 		where t.fileId = #{fileId}
 	</update>
 
+	<update id="updateFileState" parameterType="java.util.List">
+		update filesInfo t
+		set t.state = '0'
+		where t.fileId in
+		<foreach item="item" collection="fileIdList" separator="," open="(" close=")" index="">
+			#{item}
+		</foreach>
+	</update>
 </mapper>
