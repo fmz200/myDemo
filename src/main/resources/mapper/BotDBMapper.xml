@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soft.mydemo.mapper.dao.BotDBDao">
+
+    <select id="queryDBVersion" resultType="java.lang.String">
+        select t.version from DBInfo t where t.id = 1;
+    </select>
+
+</mapper>
