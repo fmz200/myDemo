@@ -103,7 +103,7 @@
         <if test="editTimeEnd != '' and editTimeEnd != null">
             AND a.editTime <![CDATA[ <= ]]> #{editTimeEnd}
         </if>
-        ORDER BY a.publishDate, a.editTime
+        ORDER BY a.id desc
     </select>
 
     <select id="getArticleByStateByAdmin" resultType="com.soft.mydemo.bean.ArticleInfoBean">

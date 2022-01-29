@@ -1,6 +1,7 @@
 package com.soft.mydemo.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.soft.mydemo.bean.douyin.DouYinBean;
 import com.soft.mydemo.bean.douyin.DouYinResult;
 import com.soft.mydemo.util.HttpRequest;
@@ -33,6 +34,17 @@ import java.util.regex.Pattern;
 public class DouYinController {
 
     public static final String DOU_YIN_BASE_URL = "https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=";
+
+    // 微博热搜url
+    public static final String HOT_SEARCH_DOU_YIN = "https://creator.douyin.com/aweme/v1/creator/data/billboard/?billboard_type=1";
+
+    @ResponseBody
+    @RequestMapping(value = "hotSearch")
+    public JSONObject hotSearch() {
+        String getResult = HttpRequest.sendGet(HOT_SEARCH_DOU_YIN, "");
+        log.info("hotSearch.getResult is {}", getResult);
+        return JSON.parseObject(getResult);
+    }
 
     /**
      * 解析抖音无水印视频
