@@ -49,8 +49,8 @@ import java.util.zip.ZipOutputStream;
 public class FilesController {
 
     // 上传路径
-    @Value("${upload.blog}")
-    private String blog;
+    @Value("${upload.userFilePath}")
+    private String userFilePath;
 
     @Autowired
     FilesInfoMapper filesInfoMapper;
@@ -83,7 +83,7 @@ public class FilesController {
         if (ObjectUtils.isEmpty(file)) {
             return new RespBean("400", "未获取到文件!");
         }
-        String filePath = blog + TimeUtils.getCurrentDateString();
+        String filePath = userFilePath + TimeUtils.getCurrentDateString();
         File imgFolder = new File(filePath);
         if (!imgFolder.exists()) {
             boolean mkdirs = imgFolder.mkdirs();
