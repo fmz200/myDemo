@@ -28,8 +28,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                //.antMatchers("/douYin/**").anonymous()
-                //.antMatchers("/weibo/**").anonymous()
                 .antMatchers("/admin/category/all").authenticated()
                 .antMatchers("/admin/**", "/reg").hasRole("1000")// /admin/**的URL都需要有超级管理员角色，如果使用.hasAuthority()方法来配置，需要在参数中加上ROLE_,如下.hasAuthority("ROLE_1000")
                 .anyRequest().authenticated()//其他的路径都是登录后即可访问
