@@ -31,16 +31,16 @@
 				and t.fileType = #{fileType}
 			</if>
 			<if test="uploadTimeStart != null and uploadTimeStart != ''">
-				and to_char(t.uploadTime,'yyyy-MM-dd') <![CDATA[ >= ]]> #{uploadTimeStart}
+				and str_to_date(t.uploadTime, '%Y-%m-%d') <![CDATA[ >= ]]> #{uploadTimeStart}
 			</if>
 			<if test="uploadTimeEnd != null and uploadTimeEnd != ''">
-				and to_char(t.uploadTime,'yyyy-MM-dd') <![CDATA[ <= ]]> #{uploadTimeEnd}
+				and str_to_date(t.uploadTime, '%Y-%m-%d') <![CDATA[ <= ]]> #{uploadTimeEnd}
 			</if>
 			<if test="editTimeStart != null and editTimeStart != ''">
-				and to_char(t.editTime,'yyyy-MM-dd') <![CDATA[ >= ]]> #{editTimeStart}
+				and str_to_date(t.editTime, '%Y-%m-%d') <![CDATA[ >= ]]> #{editTimeStart}
 			</if>
 			<if test="editTimeEnd != null and editTimeEnd != ''">
-				and to_char(t.editTime,'yyyy-MM-dd') <![CDATA[ <= ]]> #{editTimeEnd}
+				and str_to_date(t.editTime, '%Y-%m-%d') <![CDATA[ <= ]]> #{editTimeEnd}
 			</if>
 			<if test="attrUser != null and attrUser != ''">
 				and t.attrUser = #{attrUser}
@@ -108,9 +108,9 @@
 		where t.fileId = #{fileId}
 	</update>
 
-	<update id="updateFileState" parameterType="java.util.List">
+	<update id="updateFileState">
 		update filesInfo t
-		set t.state = '0'
+		set t.state = #{state}
 		where t.fileId in
 		<foreach item="item" collection="fileIdList" separator="," open="(" close=")" index="">
 			#{item}

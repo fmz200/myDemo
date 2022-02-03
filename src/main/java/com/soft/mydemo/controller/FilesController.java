@@ -113,14 +113,26 @@ public class FilesController {
         return new RespBean("500", "上传失败!");
     }
 
+
     @RequestMapping(value = "/deleteFiles")
-    public RespBean deleteFiles(String fileIds) {
-        log.debug("deleteFile start... fileIds is {}", fileIds);
+    public RespBean deleteFiles(String fileIds, String state) {
+        log.debug("deleteFile start... fileIds is {}, state is {}", fileIds, state);
         if (StringUtils.isEmpty(fileIds)) {
             return new RespBean("400", "未获取到需要删除的文件信息!");
         }
+        String toState = "";
+        switch (state) {
+            case "1":
+               toState = "2";
+               break;
+            case "2":
+                toState = "0";
+                break;
+            default:
+                break;
+        }
         List<String> fileIdList = Arrays.asList(fileIds.split(","));
-        filesInfoMapper.updateFileState(fileIdList);
+        filesInfoMapper.updateFileState(fileIdList, toState);
         return new RespBean("200", "删除成功!");
     }
 
@@ -139,7 +151,6 @@ public class FilesController {
         }
 
         try {
-            // List<FilesInfoBean> interfaceInfoBeanList = JSON.parseArray(infoBeanList.getParamListString(), FilesInfoBean.class);
             List<String> stringList = infoBeanList.uuidSplit();
             if (CollectionUtils.isEmpty(stringList)) {
                 return;

@@ -2,6 +2,7 @@ package com.soft.mydemo.mapper;
 
 import com.soft.mydemo.bean.filesInfo.FilesInfoBean;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface FilesInfoMapper {
 
     void updateFileDownloadTimes(String fileId);
 
-    void updateFileState(List<String> fileIdList);
+    void updateFileState(@Param("fileIdList") List<String> fileIdList, @Param("state") String state);
 }
