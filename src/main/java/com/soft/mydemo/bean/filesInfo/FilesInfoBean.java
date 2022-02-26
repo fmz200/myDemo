@@ -2,6 +2,8 @@ package com.soft.mydemo.bean.filesInfo;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class FilesInfoBean {
     // 文件唯一标识
@@ -40,5 +42,6 @@ public class FilesInfoBean {
     private String uploadTimeEnd;
     private String editTimeStart;
     private String editTimeEnd;
+    private List<String> fileTypes;
 
 }

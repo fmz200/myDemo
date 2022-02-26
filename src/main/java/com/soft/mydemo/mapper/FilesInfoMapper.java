@@ -9,6 +9,8 @@ import java.util.List;
 @Mapper
 public interface FilesInfoMapper {
 
+    List<String> getFileTypes();
+
     List<FilesInfoBean> queryFilesInfo(FilesInfoBean interfaceInfoBean);
 
     void insertFilesInfo(FilesInfoBean interfaceInfoBean);

@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +55,21 @@ public class FilesController {
     FilesInfoMapper filesInfoMapper;
 
     /**
+     * 获取文件类型选择框选项值
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getFileTypes")
+    public Map<String, Object> getFileTypes() {
+        log.debug("getFileTypes start... ");
+        List<String> fileTypes = filesInfoMapper.getFileTypes();
+        Map<String, Object> map = new HashMap<>();
+        map.put("fileTypes", fileTypes);
+        log.debug("getFileTypes end... fileTypes is {}", fileTypes);
+        return map;
+    }
+
+    /**
      * 文件查询
      *
      * @param filesInfoParams 请求报文
@@ -65,7 +79,10 @@ public class FilesController {
     @ResponseBody
     public Map<String, Object> queryFilesInfo(FilesInfoBean filesInfoParams) {
         log.debug("queryFilesInfo begin... filesInfoParams is {}", JSON.toJSONString(filesInfoParams));
-
+        // 默认查询有效的文件
+        if (!ObjectUtils.isEmpty(filesInfoParams) && ObjectUtils.isEmpty(filesInfoParams.getState())) {
+            filesInfoParams.setState("1");
+        }
         PageMethod.startPage(filesInfoParams.getPageNum(), filesInfoParams.getPageSize());
         List<FilesInfoBean> filesInfoList = filesInfoMapper.queryFilesInfo(filesInfoParams);
         PageInfo<FilesInfoBean> pageInfo = new PageInfo<>(filesInfoList);
@@ -83,6 +100,14 @@ public class FilesController {
         if (ObjectUtils.isEmpty(file)) {
             return new RespBean("400", "未获取到文件!");
         }
+        String filename = file.getOriginalFilename();
+        file.getSize();
+        //文件后缀
+        String suffix = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
+        //获取文件大小
+        long len = file.getSize();
+        String fileSize = FileUtils.getFileSize(len);
+        // 查询数据库有没有重名文件，如果有则提示“是否覆盖源文件”，自己用，这个功能不做
         String filePath = userFilePath + TimeUtils.getCurrentDateString();
         File imgFolder = new File(filePath);
         if (!imgFolder.exists()) {
@@ -90,7 +115,6 @@ public class FilesController {
             log.info("mkdirs is {}", mkdirs);
         }
         String fileId = String.valueOf(UUID.randomUUID()).replace("-", "");
-        String filename = file.getOriginalFilename();
         try {
             org.apache.commons.io.IOUtils.write(file.getBytes(), new FileOutputStream(new File(imgFolder, filename)));
             filePath = String.format("%s/%s", filePath, filename);
@@ -98,8 +122,8 @@ public class FilesController {
             FilesInfoBean filesInfoBean = new FilesInfoBean();
             filesInfoBean.setFileId(fileId);
             filesInfoBean.setFileName(filename);
-            filesInfoBean.setFileType("");
-            filesInfoBean.setFileSize("");
+            filesInfoBean.setFileType(suffix);
+            filesInfoBean.setFileSize(fileSize);
             filesInfoBean.setFilePtah(filePath);
             filesInfoBean.setUploadTime(TimeUtils.getCurrDateString());
             filesInfoBean.setAttrUser(String.valueOf(UserUtils.getCurrentUser().getId()));
@@ -117,7 +141,7 @@ public class FilesController {
     @RequestMapping(value = "/deleteFiles")
     public RespBean deleteFiles(String fileIds, String state) {
         log.debug("deleteFile start... fileIds is {}, state is {}", fileIds, state);
-        if (StringUtils.isEmpty(fileIds)) {
+        if (ObjectUtils.isEmpty(fileIds)) {
             return new RespBean("400", "未获取到需要删除的文件信息!");
         }
         String toState = "";
@@ -144,7 +168,7 @@ public class FilesController {
     @RequestMapping(value = "/downloadFiles")
     public void downloadFiles(InterfaceInfoListBean infoBeanList, HttpServletResponse response) {
         log.debug("downloadFiles start... infoBeanList is {}", infoBeanList);
-        if (ObjectUtils.isEmpty(infoBeanList) || (StringUtils.isEmpty(infoBeanList.getParamListString())
+        if (ObjectUtils.isEmpty(infoBeanList) || (ObjectUtils.isEmpty(infoBeanList.getParamListString())
                 && CollectionUtils.isEmpty(infoBeanList.getFilesInfoList()))) {
             log.debug("downloadFiles end... infoBeanList is empty");
             return;
@@ -167,7 +191,7 @@ public class FilesController {
 
                 String downloadPath = logForOne.getFilePtah();
                 // 下载路径为空
-                if (StringUtils.isEmpty(downloadPath)) {
+                if (ObjectUtils.isEmpty(downloadPath)) {
                     continue;
                 }
                 byte[] buffer = FileUtils.downloadIO(downloadPath);
@@ -230,7 +254,7 @@ public class FilesController {
         log.debug("viewLog.logForOne is {}", logForOne);
         String downloadPath = logForOne.getFilePtah();
         // 下载路径为空
-        if (StringUtils.isEmpty(downloadPath)) {
+        if (ObjectUtils.isEmpty(downloadPath)) {
             map.put("code", 400);
             map.put("msg", "未查询到文件下载路径");
             return map;

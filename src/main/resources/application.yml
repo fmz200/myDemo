@@ -4,8 +4,12 @@ spring:
     url: jdbc:mysql://localhost:3306/vueBlog #url 本地环境
     username: root  #用户名
     password: root1234  #密码
-    #driver-class-name: com.mysql.jdbc.Driver  #数据库链接驱动
     driver-class-name: com.mysql.cj.jdbc.Driver  #数据库链接驱动
+
+#    url: jdbc:sqlite:/Users/king/project/myDemo/BlogDatabase.db # 创建的sqlite数据库所在路径
+#    username: # 因为没有用户名和密码，所以这两个参数就没有值
+#    password:
+#    driver-class-name: org.sqlite.JDBC # sqlite驱动
 
   # 配置文件上传限制
   servlet:

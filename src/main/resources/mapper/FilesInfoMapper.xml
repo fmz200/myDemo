@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.soft.mydemo.mapper.FilesInfoMapper" >
 
+	<select id="getFileTypes" resultType="java.lang.String">
+		select distinct t.fileType from filesInfo t order by t.fileType
+	</select>
+
 	<!-- 文件查询 -->
 	<select id="queryFilesInfo"
 			parameterType="com.soft.mydemo.bean.filesInfo.FilesInfoBean"
@@ -25,10 +29,13 @@
 				and t.fileId = #{fileId}
 			</if>
 			<if test="fileName != null and fileName != ''">
-				and t.fileName = #{fileName}
+				and t.fileName like concat('%', #{fileName}, '%')
 			</if>
-			<if test="fileType != null and fileType != ''">
-				and t.fileType = #{fileType}
+			<if test="fileTypes != null and fileTypes.size > 0">
+				and t.fileType in
+				<foreach item="item" collection="fileTypes" separator="," open="(" close=")" index="">
+					#{item}
+				</foreach>
 			</if>
 			<if test="uploadTimeStart != null and uploadTimeStart != ''">
 				and str_to_date(t.uploadTime, '%Y-%m-%d') <![CDATA[ >= ]]> #{uploadTimeStart}
@@ -52,7 +59,7 @@
 				and t.state = #{state}
 			</if>
 		</where>
-		order by t.uploadTime, t.editTime
+		order by t.uploadTime desc, t.editTime desc
 	</select>
 
 	<insert id="insertFilesInfo" parameterType="com.soft.mydemo.bean.filesInfo.FilesInfoBean">

@@ -294,18 +294,10 @@ CREATE TABLE `filesInfo` (
 -- ----------------------------
 -- Records of filesInfo
 -- ----------------------------
-INSERT INTO `filesInfo` VALUES ('fjwefwefwe01', 'Vue22', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2017-12-24 06:30:46', '2021-12-30 06:30:46', 'linghu', '90', '9', 1, 'test测试');
-INSERT INTO `filesInfo` VALUES ('58', '人生感悟', '1', '120M', 'd/dwd/dwe/ewe/fr/image.jpg', '2017-12-24 06:30:46', '2021-12-30 06:30:46', 'linghu', '90', '9', 1, 'test测试');
-INSERT INTO `filesInfo` VALUES ('60', 'JavaEE', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2017-12-24 06:30:46', '2021-12-30 06:30:46', 'linghu', '90', '9', 1, 'test测试');
-INSERT INTO `filesInfo` VALUES ('61', 'Git', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2017-12-24 06:30:46', '2021-12-30 06:30:46', 'linghu', '90', '9', 1, 'test测试');
-INSERT INTO `filesInfo` VALUES ('62', 'Linux', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-21 06:30:46', '2021-12-30 06:30:46', 'linghu', '90', '9', 1, 'test测试');
-INSERT INTO `filesInfo` VALUES ('64', 'MongoDB', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-22 06:30:46', '2021-12-30 06:30:46', 'sang', '90', '9', 1, 'test测试');
-INSERT INTO `filesInfo` VALUES ('fjwefwefwe02', 'Vue22', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-23 06:30:46', '2021-12-25 06:30:46', 'sang', '90', '9', 1, 'test测试');
-INSERT INTO `filesInfo` VALUES ('580', '人生感悟', '1', '120M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-24 06:30:46', '2021-12-30 06:30:46', 'sang', '90', '9', 1, 'test测试');
-INSERT INTO `filesInfo` VALUES ('600', '佛挡杀佛', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-24 06:30:46', '2021-12-31 06:30:46', 'sang', '90', '9', 1, 'test测试');
-INSERT INTO `filesInfo` VALUES ('610', '分割', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-24 06:30:46', '2022-01-30 06:30:46', 'chuliuxiang', '90', '9', 1, 'test测试');
-INSERT INTO `filesInfo` VALUES ('620', 'Greg', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-24 06:30:46', '2021-12-30 06:30:46', 'chuliuxiang', '90', '9', 1, 'test测试');
-INSERT INTO `filesInfo` VALUES ('640', '各个', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-24 06:30:46', '2021-12-30 06:30:46', 'chuliuxiang', '90', '9', 1, 'test测试');
+INSERT INTO `filesInfo` VALUES ('61', '测试图片1', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-24 06:30:46', '2021-12-30 06:30:46', 'linghu', '90', '9', 1, 'test测试1');
+INSERT INTO `filesInfo` VALUES ('62', '测试图片2', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-21 06:30:46', '2021-12-30 06:30:46', 'linghu', '90', '9', 1, 'test测试2');
+INSERT INTO `filesInfo` VALUES ('64', '测试图片3', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-22 06:35:46', '2021-12-30 06:30:46', 'sang', '90', '9', 1, 'test测试3');
+INSERT INTO `filesInfo` VALUES ('file01', '测试图片4', '1', '10M', 'd/dwd/dwe/ewe/fr/image.jpg', '2021-12-23 06:37:46', '2021-12-25 06:30:46', 'sang', '90', '9', 1, 'test测试4');
 
 -- ----------------------------
 -- View structure for pvview
