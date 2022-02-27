@@ -1,0 +1,17 @@
+# 上传的目标文件夹
+upload:
+  localPath: ./home/upload/localPath
+  # 博客文件存放路径
+  # mac环境
+  blog: /Users/king/home/uploadFile/blogImg/
+  # win环境
+  #blog: D:\Users\king\home\uploadFile\blogImg\
+
+  # 通用上传路径，必须是全路径
+  common: /Users/king/home/uploadFile/common/
+
+  # 用户文件存放路径
+  # mac环境
+  userFilePath: /Users/king/home/uploadFile/userFile/
+  # win环境
+  #userFilePath: D:\Users\king\home\uploadFile\userFile\

@@ -1,15 +1,16 @@
 spring:
-  datasource:
-    name: vueBlog  #数据库别名
-    url: jdbc:mysql://localhost:3306/vueBlog #url 本地环境
-    username: root  #用户名
-    password: root1234  #密码
-    driver-class-name: com.mysql.cj.jdbc.Driver  #数据库链接驱动
-
-#    url: jdbc:sqlite:/Users/king/project/myDemo/BlogDatabase.db # 创建的sqlite数据库所在路径
-#    username: # 因为没有用户名和密码，所以这两个参数就没有值
-#    password:
-#    driver-class-name: org.sqlite.JDBC # sqlite驱动
+  #Spring Boot 2.4以后对application.yml进行了彻底更新，旨在简化和合理化加载外部配置的方式。
+  #需要使用旧的配置方式可以配置spring.config.use-legacy-processing = true
+  #https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-Config-Data-Migration-Guide
+  config:
+    use-legacy-processing: true
+  #旧的配置方式
+  profiles:
+    active: dev
+  #新的配置方式
+#    activate:
+#      on-profile:
+#        - dev
 
   # 配置文件上传限制
   servlet:
@@ -37,27 +38,6 @@ logging:
     com.soft.mydemo: debug
   #path: /Users/jackie/workspace/rome/
   #file: springbootdemo.log
-
-# 上传的目标文件夹
-upload:
-  localPath: ./home/upload/localPath
-  # 博客文件存放路径
-  # mac环境
-  # blog: /Users/king/home/uploadFile/blogImg/
-  # win环境
-  #blog: D:\Users\king\home\uploadFile\blogImg\
-  # 服务器环境
-  blog: /usr/local/uploadFile/blogImg/
-  # 通用上传路径，必须是全路径
-  common: /Users/king/home/uploadFile/common/
-
-  # 用户文件存放路径
-  # mac环境
-  #userFilePath: /Users/king/home/uploadFile/userFile/
-  # win环境
-  #userFilePath: D:\Users\king\home\uploadFile\userFile\
-  # 服务器环境
-  userFilePath: /usr/local/uploadFile/userFile/
 
 pagehelper:
   helperDialect: mysql
