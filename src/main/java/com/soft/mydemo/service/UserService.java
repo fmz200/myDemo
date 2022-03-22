@@ -80,8 +80,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<UserInfoBean> getUserByNickname(String nickname) {
-        List<UserInfoBean> list = userMapper.getUserByNickname(nickname);
-        return list;
+        return userMapper.getUserByNickname(nickname);
     }
 
     public List<RoleInfoBean> getAllRole() {
