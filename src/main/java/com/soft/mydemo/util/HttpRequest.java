@@ -1,6 +1,7 @@
 package com.soft.mydemo.util;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.thymeleaf.util.StringUtils;
 
 import java.io.BufferedReader;
@@ -12,6 +13,7 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class HttpRequest {
     /**
      * 向指定URL发送GET方法的请求
@@ -39,9 +41,9 @@ public class HttpRequest {
             // 获取所有响应头字段
             Map<String, List<String>> map = connection.getHeaderFields();
             // 遍历所有的响应头字段
-            for (String key : map.keySet()) {
+            /*for (String key : map.keySet()) {
                 System.out.println(key + "--->" + map.get(key));
-            }
+            }*/
             // 定义 BufferedReader输入流来读取URL的响应
             in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
@@ -49,15 +51,14 @@ public class HttpRequest {
                 result.append(line);
             }
         } catch (Exception e) {
-            System.err.println("发送GET请求出现异常！" + e);
-            e.printStackTrace();
+            log.error("发送GET请求出现异常！", e);
         } finally {// 使用finally块来关闭输入流
             try {
                 if (in != null) {
                     in.close();
                 }
             } catch (Exception e2) {
-                e2.printStackTrace();
+                log.error("发送GET请求出现异常！finally:", e2);
             }
         }
         return result.toString();

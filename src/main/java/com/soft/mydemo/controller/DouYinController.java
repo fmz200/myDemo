@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.soft.mydemo.bean.douyin.DouYinBean;
 import com.soft.mydemo.bean.douyin.DouYinResult;
+import com.soft.mydemo.util.DownloadUtils;
 import com.soft.mydemo.util.HttpRequest;
 import com.soft.mydemo.utils.FileDownloadUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.util.StringUtils;
 
@@ -20,6 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,6 +49,39 @@ public class DouYinController {
         String getResult = HttpRequest.sendGet(HOT_SEARCH_DOU_YIN, "");
         log.info("hotSearch.getResult is {}", getResult);
         return JSON.parseObject(getResult);
+    }
+
+    /**
+     * 批量获取抖音视频真实地址
+     *
+     * @param linkList 视频链接
+     * @return 视频真实链接
+     */
+    @ResponseBody
+    @RequestMapping("/getRealVideoUPath")
+    public Map<String, String> getRealVideoUPath(@RequestParam List<String> linkList) {
+        Map<String, String> result = new HashMap<>();
+        for (String link : linkList) {
+            String videoUrl = "";
+            try {
+                // 拿到视频对应的 ItemId
+                String itemId = matchItemId2(link);
+                // 用ItemId拿视频的详细信息，包括无水印视频url
+                String videoResult = HttpRequest.sendGet(DOU_YIN_BASE_URL + itemId, "");
+                DouYinResult dyResult = JSON.parseObject(videoResult, DouYinResult.class);
+                if (ObjectUtils.isEmpty(dyResult) || CollectionUtils.isEmpty(dyResult.getItem_list())) {
+                    result.put(itemId, videoUrl);
+                    continue;
+                }
+                // 无水印视频 url
+                videoUrl = dyResult.getItem_list().get(0).getVideo().getPlay_addr().getUrl_list().get(0).replace("playwm", "play");
+                log.info("getRealVideoUPath itemId is {}, videoUrl is {}", itemId, videoUrl);
+                result.put(itemId, videoUrl);
+            } catch (Exception e) {
+                log.error("getRealVideoUPath has an error...", e);
+            }
+        }
+        return result;
     }
 
     /**
@@ -92,7 +130,7 @@ public class DouYinController {
             // 4.1 下载抖音视频到本地指定的文件夹
             boolean b = FileDownloadUtils.httpDownload(videoUrl, "D:\\home\\02.mp4");
             // 4.2 下载抖音视频到浏览器页面
-            // DownloadUtils.download("0", itemId, videoUrl, response);
+            DownloadUtils.download("0", itemId, videoUrl, response);
 
             log.info("parseVideoUrl.b is {}", b);
 
@@ -180,7 +218,7 @@ public class DouYinController {
                 log.error("error");
             } else {
                 //matchUrl就是去水印的视频地址 你想干啥就干啥吧
-                log.info("success {}",matchUrl);
+                log.info("success {}", matchUrl);
             }
 
         } catch (Exception e) {
@@ -199,5 +237,12 @@ public class DouYinController {
         int video = url.lastIndexOf("video");
         int region = url.lastIndexOf("region");
         return url.substring(video + 6, region - 2);
+    }
+
+    public static String matchItemId2(String url) {
+        // eg:https://www.douyin.com/video/7087886391660645663?previous_page=app_code_link
+        int video = url.lastIndexOf("video");
+        int index = url.lastIndexOf("?");
+        return url.substring(video + 6, index - 1);
     }
 }
