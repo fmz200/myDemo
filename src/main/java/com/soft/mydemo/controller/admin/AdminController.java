@@ -9,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -34,8 +32,8 @@ public class AdminController {
     @PutMapping(value = "/article/dustbin")
     public RespBean updateArticleState(Long[] aids, Integer state) {
         if (articleService.updateArticleState(aids, state) == aids.length) {
-            return new RespBean("success", "删除成功!");
+            return new RespBean(CommonConstants.SUCCESS, "删除成功!");
         }
-        return new RespBean("error", "删除失败!");
+        return new RespBean(CommonConstants.ERROR, "删除失败!");
     }
 }

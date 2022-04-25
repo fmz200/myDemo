@@ -1,10 +1,11 @@
 # 上传的目标文件夹
 upload:
-  localPath: ./home/upload/localPath
   # 博客文件存放路径
   # 服务器环境
+  # 图标存储路径
   blog: /usr/local/uploadFile/blogImg/
-
+  # 图标的映射路径(虚拟路径)
+  blogImgMapper: /blogImg/
   # 通用上传路径，必须是全路径
   common: /usr/local/uploadFile/common/
 

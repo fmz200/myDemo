@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.soft.mydemo.bean.douyin.DouYinBean;
 import com.soft.mydemo.bean.douyin.DouYinResult;
+import com.soft.mydemo.common.CommonConstants;
 import com.soft.mydemo.util.DownloadUtils;
 import com.soft.mydemo.util.HttpRequest;
 import com.soft.mydemo.utils.FileDownloadUtils;
@@ -215,7 +216,7 @@ public class DouYinController {
 
             if (TextUtils.isEmpty(matchUrl)) {
                 //解析失败
-                log.error("error");
+                log.error(CommonConstants.ERROR);
             } else {
                 //matchUrl就是去水印的视频地址 你想干啥就干啥吧
                 log.info("success {}", matchUrl);

@@ -2,6 +2,7 @@ package com.soft.mydemo.controller;
 
 import com.soft.mydemo.bean.SalesInfoBean;
 import com.soft.mydemo.bean.SalesInfoBeanResp;
+import com.soft.mydemo.common.CommonConstants;
 import com.soft.mydemo.service.SalesInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +31,12 @@ public class HelloController {
 
     @RequestMapping("/success")
     public String saySuccess() {
-        return "success";
+        return CommonConstants.SUCCESS;
     }
 
     @RequestMapping("/error")
     public String sayError() {
-        return "error";
+        return CommonConstants.ERROR;
     }
 
     @ResponseBody

@@ -1,14 +1,16 @@
 package com.soft.mydemo.util;
 
+import com.microsoft.schemas.vml.CTShape;
 import com.spire.doc.Document;
 import com.spire.doc.documents.DocumentObjectType;
 import com.spire.doc.interfaces.ICompositeObject;
 import com.spire.doc.interfaces.IDocumentObject;
-import com.microsoft.schemas.vml.CTShape;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.model.PicturesTable;
 import org.apache.poi.hwpf.usermodel.Picture;
-import org.apache.poi.xwpf.usermodel.*;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
 import org.openxmlformats.schemas.drawingml.x2006.main.CTGraphicalObject;

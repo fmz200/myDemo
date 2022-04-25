@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.5.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.soft</groupId>
     <artifactId>myDemo</artifactId>
@@ -17,6 +17,15 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>com.e-iceblue</id>
+            <name>e-iceblue</name>
+            <url>https://repo.e-iceblue.cn/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -29,13 +38,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <!-- 移除嵌入式tomcat插件 -->
-<!--            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>-->
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -84,11 +86,6 @@
             <artifactId>spring-security-web</artifactId>
             <version>5.5.1</version>
         </dependency>
-<!--        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-            <version>5.2.1</version>
-        </dependency>-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
@@ -113,31 +110,14 @@
         </dependency>
         <dependency>
             <groupId>e-iceblue</groupId>
-            <artifactId>spire.doc</artifactId>
-            <version>3.9.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/webapp/WEB_INF/lib/spire.doc-2.2.0.jar</systemPath>
+            <artifactId>spire.office</artifactId>
+            <version>5.4.2</version>
         </dependency>
-<!--        <dependency>
-            <groupId>e-iceblue</groupId>
-            <artifactId>free.spire.doc</artifactId>
-            <version>2.7.3</version>
-            <scope>system</scope>
-            <systemPath>http://repo.e-iceblue.com/nexus/content/groups/public/</systemPath>
-        </dependency>-->
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
             <version>2.0.24</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.atlassian.plugins/document-conversion-library -->
-<!--        <dependency>
-            <groupId>com.atlassian.plugins</groupId>
-            <artifactId>document-conversion-library</artifactId>
-            <version>2.4.2</version>
-            <scope>provided</scope>
-        </dependency>-->
-
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -185,15 +165,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.7.22</version>
+        </dependency>
     </dependencies>
-
-<!--    <repositories>
-        <repository>
-            <id>spring-maven-milestone</id>
-            <name>Spring Maven Milestone Repository</name>
-            <url>http://maven.springframework.org/milestone</url>
-        </repository>
-    </repositories>-->
 
     <build>
         <plugins>

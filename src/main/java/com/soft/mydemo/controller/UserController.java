@@ -1,13 +1,13 @@
 package com.soft.mydemo.controller;
 
 import com.soft.mydemo.bean.RespBean;
+import com.soft.mydemo.common.CommonConstants;
 import com.soft.mydemo.service.UserService;
 import com.soft.mydemo.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -54,14 +54,14 @@ public class UserController {
         return false;
     }
 
-    @RequestMapping(value = "/updateUserEmail",method = RequestMethod.PUT)
+    @RequestMapping(value = "/updateUserEmail")
     public RespBean updateUserEmail(String email) {
         log.debug("UserController.updateUserEmail start...");
         if (userService.updateUserEmail(email) == 1) {
             log.debug("UserController.updateUserEmail end with return success......");
-            return new RespBean("success", "开启成功!");
+            return new RespBean(CommonConstants.SUCCESS, "开启成功!");
         }
         log.debug("UserController.updateUserEmail end with return error......");
-        return new RespBean("error", "开启失败!");
+        return new RespBean(CommonConstants.ERROR, "开启失败!");
     }
 }

@@ -6,6 +6,7 @@ import com.github.pagehelper.page.PageMethod;
 import com.soft.mydemo.bean.RespBean;
 import com.soft.mydemo.bean.filesInfo.FilesInfoBean;
 import com.soft.mydemo.bean.filesInfo.InterfaceInfoListBean;
+import com.soft.mydemo.common.CommonConstants;
 import com.soft.mydemo.mapper.FilesInfoMapper;
 import com.soft.mydemo.util.FileUtils;
 import com.soft.mydemo.util.TimeUtils;
@@ -248,7 +249,7 @@ public class FilesController {
         log.debug("viewLog start... uuid is {}", uuid);
         Map<String, Object> map = new HashMap<>();
         map.put("code", 200);
-        map.put("mag", "success");
+        map.put("mag", CommonConstants.SUCCESS);
 
         FilesInfoBean logForOne = filesInfoMapper.queryFilesInfoForOne(uuid);
         log.debug("viewLog.logForOne is {}", logForOne);

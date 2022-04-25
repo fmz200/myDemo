@@ -2,6 +2,7 @@ package com.soft.mydemo.controller;
 
 import com.soft.mydemo.bean.RespBean;
 import com.soft.mydemo.bean.UserInfoBean;
+import com.soft.mydemo.common.CommonConstants;
 import com.soft.mydemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +20,12 @@ public class LoginRegController {
 
     @RequestMapping("/login_error")
     public RespBean loginError() {
-        return new RespBean("error", "登录失败!");
+        return new RespBean(CommonConstants.ERROR, "登录失败!");
     }
 
     @RequestMapping("/login_success")
     public RespBean loginSuccess() {
-        return new RespBean("success", "登录成功!");
+        return new RespBean(CommonConstants.SUCCESS, "登录成功!");
     }
 
     /**
@@ -36,7 +37,7 @@ public class LoginRegController {
      */
     @RequestMapping("/login_page")
     public RespBean loginPage() {
-        return new RespBean("error", "尚未登录，请登录!");
+        return new RespBean(CommonConstants.ERROR, "尚未登录，请登录!");
     }
 
     @PostMapping("/reg")
@@ -44,12 +45,12 @@ public class LoginRegController {
         int result = userService.reg(user);
         if (result == 0) {
             //成功
-            return new RespBean("success", "注册成功!");
+            return new RespBean(CommonConstants.SUCCESS, "注册成功!");
         } else if (result == 1) {
-            return new RespBean("error", "用户名重复，注册失败!");
+            return new RespBean(CommonConstants.ERROR, "用户名重复，注册失败!");
         } else {
             //失败
-            return new RespBean("error", "注册失败!");
+            return new RespBean(CommonConstants.ERROR, "注册失败!");
         }
     }
 }

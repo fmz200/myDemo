@@ -3,6 +3,7 @@ package com.soft.mydemo.controller.admin;
 import com.soft.mydemo.bean.RespBean;
 import com.soft.mydemo.bean.RoleInfoBean;
 import com.soft.mydemo.bean.UserInfoBean;
+import com.soft.mydemo.common.CommonConstants;
 import com.soft.mydemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,27 +40,27 @@ public class UserManaController {
     @RequestMapping(value = "/user/enabled", method = RequestMethod.PUT)
     public RespBean updateUserEnabled(Boolean enabled, Long uid) {
         if (userService.updateUserEnabled(enabled, uid) == 1) {
-            return new RespBean("success", "更新成功!");
+            return new RespBean(CommonConstants.SUCCESS, "更新成功!");
         } else {
-            return new RespBean("error", "更新失败!");
+            return new RespBean(CommonConstants.ERROR, "更新失败!");
         }
     }
 
     @RequestMapping(value = "/user/{uid}", method = RequestMethod.DELETE)
     public RespBean deleteUserById(@PathVariable Long uid) {
         if (userService.deleteUserById(uid) == 1) {
-            return new RespBean("success", "删除成功!");
+            return new RespBean(CommonConstants.SUCCESS, "删除成功!");
         } else {
-            return new RespBean("error", "删除失败!");
+            return new RespBean(CommonConstants.ERROR, "删除失败!");
         }
     }
 
     @RequestMapping(value = "/user/role", method = RequestMethod.PUT)
     public RespBean updateUserRoles(Long[] rids, Long id) {
         if (userService.updateUserRoles(rids, id) == rids.length) {
-            return new RespBean("success", "更新成功!");
+            return new RespBean(CommonConstants.SUCCESS, "更新成功!");
         } else {
-            return new RespBean("error", "更新失败!");
+            return new RespBean(CommonConstants.ERROR, "更新失败!");
         }
     }
 }
