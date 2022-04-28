@@ -37,20 +37,21 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         log.debug("loadUserByUsername start... userName is {}", userName);
         UserInfoBean user = userMapper.loadUserByUsername(userName);
-        // log.debug("currentUserName.user is {}", user);
         if (Objects.isNull(user)) {
-            //避免返回null，这里返回一个不含有任何值的User对象，在后期的密码比对过程中一样会验证失败
+            // 避免返回null，这里返回一个不含有任何值的User对象，在后期的密码比对过程中一样会验证失败
             return new UserInfoBean();
         }
         //查询用户的角色信息，并返回存入user中
         List<RoleInfoBean> roles = rolesMapper.getRolesByUid(user.getId());
         user.setRoles(roles);
-        log.debug("loadUserByUsername end...user is {}", user);
+        log.debug("loadUserByUsername end...user.id is {}", user.getId());
         return user;
     }
 
     /**
-     * @param user
+     * 注册
+     *
+     * @param user 用户
      * @return 0表示成功
      * 1表示用户名重复
      * 2表示失败
@@ -80,7 +81,11 @@ public class UserService implements UserDetailsService {
     }
 
     public List<UserInfoBean> getUserByNickname(String nickname) {
-        return userMapper.getUserByNickname(nickname);
+        List<UserInfoBean> userInfoBeanList = userMapper.getUserByNickname(nickname);
+        for (UserInfoBean bean : userInfoBeanList) {
+            bean.setPassword("");
+        }
+        return userInfoBeanList;
     }
 
     public List<RoleInfoBean> getAllRole() {
@@ -96,11 +101,13 @@ public class UserService implements UserDetailsService {
     }
 
     public int updateUserRoles(Long[] rids, Long id) {
-        int i = userMapper.deleteUserRolesByUid(id);
+        userMapper.deleteUserRolesByUid(id);
         return userMapper.setUserRoles(rids, id);
     }
 
     public UserInfoBean getUserById(Long id) {
-        return userMapper.getUserById(id);
+        UserInfoBean user = userMapper.getUserById(id);
+        user.setPassword("");
+        return user;
     }
 }
