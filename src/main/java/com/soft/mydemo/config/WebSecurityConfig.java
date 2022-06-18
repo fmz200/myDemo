@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
@@ -28,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/blogimg/**", "/index.html", "/static/**", "/redis/**").permitAll()
                 .antMatchers("/admin/category/all").authenticated()
                 .antMatchers("/admin/**", "/reg").hasRole("1000")// /admin/**的URL都需要有超级管理员角色，如果使用.hasAuthority()方法来配置，需要在参数中加上ROLE_,如下.hasAuthority("ROLE_1000")
                 .anyRequest().authenticated()//其他的路径都是登录后即可访问
@@ -47,11 +47,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 }).loginProcessingUrl("/login")
                 .usernameParameter("username").passwordParameter("password").permitAll()
                 .and().logout().permitAll().and().csrf().disable().exceptionHandling().accessDeniedHandler(getAccessDeniedHandler());
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/blogimg/**", "/index.html", "/static/**", "/redis/**");
     }
 
     @Bean
