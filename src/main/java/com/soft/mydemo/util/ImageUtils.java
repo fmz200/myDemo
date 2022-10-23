@@ -22,8 +22,14 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -189,6 +195,42 @@ public class ImageUtils {
             File del = new File(file.toURI());
             del.delete();
         }
+    }
+
+    /**
+     * 通过BufferedImage图片流调整图片大小
+     * 使用jdk的awt包下的Image.getScaledInstance实现图片的缩放。好处是无需引入第三方jar，缺点是会稍微有点模糊。
+     */
+    public static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
+        Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_AREA_AVERAGING);
+        BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+        outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
+        return outputImage;
+    }
+    /**
+     * BufferedImage图片流转byte[]数组
+     */
+    public static byte[] imageToBytes(BufferedImage bImage) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(bImage, "jpg", out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return out.toByteArray();
+    }
+    /**
+     * byte[]数组转BufferedImage图片流
+     */
+    private static BufferedImage bytesToBufferedImage(byte[] ImageByte) {
+        ByteArrayInputStream in = new ByteArrayInputStream(ImageByte);
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
     }
 }
 

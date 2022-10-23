@@ -80,7 +80,7 @@ public class HttpClientUtil {
             HttpPost httpPost = new HttpPost(url);
             // 创建参数列表
             if (param != null) {
-                List<NameValuePair> paramList = new ArrayList<NameValuePair>();
+                List<NameValuePair> paramList = new ArrayList<>();
                 for (String key : param.keySet()) {
                     paramList.add(new BasicNameValuePair(key, param.get(key)));
                 }
