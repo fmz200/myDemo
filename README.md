@@ -28,20 +28,17 @@
 # 快速运行
 
 1. 克隆本项目到本地
-
 ```
-git@github.com:fmz200/myDemo-web.git
-
 git@github.com:fmz200/myDemo.git
 ```
-2. 找到MyDemo项目中resources目录下的vueblog.sql文件，在MySQL数据库中执行  
-3. 根据自己本地情况修改数据库配置，数据库配置在MyDemo项目的application-devDb.yml中，为了区分本地开发环境和发布服务器的环境，大部分配置都分开了dev和prod，具体启动哪个环境在application.yml文件中修改
+2. 找到myDemo项目中resources目录下的vueblog.sql文件，在MySQL数据库中执行  
+3. 根据自己本地情况修改数据库配置，数据库配置在myDemo项目的application-devDb.yml中，为了区分本地开发环境和发布服务器的环境，大部分配置都分开了dev和prod，具体启动哪个环境在application.yml文件中修改
 ```yml
   #旧的配置方式
   profiles:
     active: dev
 ```
-4. 在IntelliJ IDEA中运行MyDemo项目
+4. 在IntelliJ IDEA中运行myDemo项目
 
 **OK，至此，服务端就启动成功了，此时我们直接在地址栏输入 http://localhost:8081/index.html 即可访问项目，如果要做二次开发，请继续看第5、6步。**
 
@@ -86,24 +83,24 @@ Forked from https://github.com/lenve/VBlog ，进行二次开发，前后端分�
 
 ## 登陆页面
 
-![登录](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/login.png)
+![登录](https://raw.githubusercontent.com/fmz200/myDemo/master/myDemo-web/doc/login.png)
 
 ## 文章列表
 
-![文章列表](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/article.png)
+![文章列表](https://raw.githubusercontent.com/fmz200/myDemo/master/myDemo-web/doc/article.png)
 
 ## 发表文章
 
-![发表文章](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/post.png)
+![发表文章](https://raw.githubusercontent.com/fmz200/myDemo/master/myDemo-web/doc/post.png)
 
 ## 用户管理
 
-![用户管理](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/usermana.png)
+![用户管理](https://raw.githubusercontent.com/fmz200/myDemo/master/myDemo-web/doc/usermana.png)
 
 ## 栏目管理
 
-![栏目管理](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/category.png)
+![栏目管理](https://raw.githubusercontent.com/fmz200/myDemo/master/myDemo-web/doc/category.png)
 
 ## 数据统计
 
-![数据统计](https://raw.githubusercontent.com/fmz200/myDemo-web/master/doc/datastatistics.png)
+![数据统计](https://raw.githubusercontent.com/fmz200/myDemo/master/myDemo-web/doc/datastatistics.png)

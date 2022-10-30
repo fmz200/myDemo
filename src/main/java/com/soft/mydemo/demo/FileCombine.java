@@ -116,5 +116,41 @@ public class FileCombine {
         }
     }
 
+    @Test
+    public void readFileByLines() {
+        String fileName = "/Users/king/project/myDemo/src/main/java/com/soft/mydemo/demo/hostname.txt";
+        File file = new File(fileName);
+        BufferedReader reader = null;
+        try {
+            System.out.println("以行为单位读取文件内容，一次读一整行：");
+            reader = new BufferedReader(new FileReader(file));
+            String tempString;
+            int line = 1;
+            // 一次读入一行，直到读入null为文件结束
+            while ((tempString = reader.readLine()) != null) {
+                // 显示行号
+                System.out.println("第 " + line + " 行内容: " + tempString);
+                line++;
+
+                tempString = tempString.replaceAll(" ", "");
+                List<String> stringList = Arrays.asList(tempString.split(","));
+                System.out.println("去重前个数：" + stringList.size());
+                HashSet<String> set = new HashSet<>(stringList);
+                System.out.println("去重后个数：" + set.size());
+                String result_string = StringUtils.join(set.toArray(), ", ");
+                System.out.println("去重后：" + result_string);
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+    }
 
 }

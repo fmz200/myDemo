@@ -35,13 +35,13 @@ git@github.com:fmz200/myDemo-web.git
 git@github.com:fmz200/myDemo.git
 ```
 
-2.找到blogserver项目中resources目录下的vueblog.sql文件，在MySQL数据库中执行  
+2.找到myDemo项目中resources目录下的vueblog.sql文件，在MySQL数据库中执行  
 3.根据自己本地情况修改数据库配置，数据库配置在SpringBoot项目的application.properties中  
-4.在IntelliJ IDEA中运行blogserver项目
+4.在IntelliJ IDEA中运行myDemo项目
 
 **OK，至此，服务端就启动成功了，此时我们直接在地址栏输入 http://localhost:8081/index.html 即可访问我们的项目，如果要做二次开发，请继续看第五、六步。**
 
-5.进入到vueblog目录中，在命令行依次输入如下命令：
+5.进入到myDemo-web目录中，在命令行依次输入如下命令：
 
 ```
 # 安装依赖
