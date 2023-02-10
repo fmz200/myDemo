@@ -1,10 +1,139 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org./dtd/mybatis-3-mapper.dtd" >
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.soft.mydemo.mapper.SaleInfoMapper">
+    <resultMap id="BaseResultMap" type="com.soft.mydemo.bean.UserInfoBean">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="nickname" property="nickname"/>
+        <result column="password" property="password"/>
+        <result column="enabled" property="enabled"/>
+        <result column="email" property="email"/>
+        <result column="avatar" property="avatar"/>
+        <result column="regTime" property="regTime"/>
+        <collection property="roles" ofType="com.soft.mydemo.bean.RoleInfoBean">
+            <id column="rid" property="id"/>
+            <result column="rname" property="name"/>
+        </collection>
+    </resultMap>
 
-    <select id="selectSales" parameterType="string" resultType="com.soft.mydemo.bean.SalesInfoBean">
-        SELECT T.uid saleId, T.username stuName
-        FROM T_USER T
-        WHERE T.UID = #{saleId}
+    <select id="querySalesInfoById" resultType="com.soft.mydemo.bean.user.SalesInfoBean">
+
+
     </select>
+
+    <select id="querySalesInfoList" resultType="com.soft.mydemo.bean.user.SalesInfoBean">
+        select
+            t.sales_name,
+            DATE_FORMAT(t.birthday,'%Y-%m-%d') as birthday,
+            t.id_type,
+            t.id_no,
+            t.nation,
+            t.education,
+            t.political_stat,
+            t.marital_stat,
+            t.sales_native_2lvl,
+            t.sales_native_3lvl,
+            t.domicile,
+            t.home_address,
+            t.mobile,
+            t.email,
+            t.graduate_school,
+            t.degree,
+            t.major
+        from t_sales_info t
+        <where>
+            <if test="sales_name != null and sales_name != ''">
+                and t.sales_name like concat('%', #{sales_name}, '%')
+            </if>
+            <if test="sales_code != null and sales_code != ''">
+                and t.sales_code = #{sales_name}
+            </if>
+            <if test="sex != null and sex != ''">
+                and t.sex = #{sex}
+            </if>
+            <if test="id_no != null and id_no != ''">
+                and t.id_no = #{id_no}
+            </if>
+            <if test="birthdayStart != null and birthdayStart != '' and birthdayEnd != null and birthdayEnd != '' ">
+                and date(t.birthday) between #{birthdayStart} and #{birthdayEnd}
+            </if>
+        </where>
+        order by t.birthday asc, t.sales_code desc
+    </select>
+
+    <select id="loadUserByUsername" resultType="com.soft.mydemo.bean.UserInfoBean">
+        SELECT t.id,
+               t.username,
+               t.nickname,
+               t.password,
+               t.enabled,
+               t.email,
+               t.avatar,
+               t.regTime
+        FROM user t
+        WHERE t.username = #{username}
+    </select>
+
+    <insert id="reg" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user
+        set username=#{username},
+            password=#{password},
+            nickname=#{nickname}
+    </insert>
+
+    <update id="updateUserEmail">
+        UPDATE user
+        set email=#{email}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getUserByNickname" resultMap="BaseResultMap">
+        SELECT u.*,r.`id` AS rid,r.`name` AS rname FROM user u,roles r,roles_user ru WHERE u.`id`=ru.`uid` AND
+        r.`id`=ru.`rid` AND u.`id` NOT IN(SELECT u.`id` FROM user u,roles_user ru WHERE u.`id`=ru.`uid` AND ru.`rid`=1)
+        <choose>
+            <when test="nickname!=null and nickname!=''">
+                and u.nickname like concat('%',#{nickname},'%') ORDER BY u.`id`
+            </when>
+            <otherwise>
+                ORDER BY u.`id` limit 20
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getUserById" resultMap="BaseResultMap">
+        SELECT u.*, r.`id` AS rid, r.`name` AS rname
+        FROM user u,
+             roles r,
+             roles_user ru
+        WHERE u.`id` = ru.`uid`
+          AND r.`id` = ru.`rid`
+          AND u.`id` = #{id}
+    </select>
+
+    <select id="getAllRole" resultType="com.soft.mydemo.bean.RoleInfoBean">
+        select *
+        from roles;
+    </select>
+
+    <update id="updateUserEnabled">
+        UPDATE user
+        set enabled=#{enabled}
+        WHERE id = #{uid}
+    </update>
+    <delete id="deleteUserById">
+        DELETE
+        FROM user
+        WHERE id = #{id}
+    </delete>
+    <delete id="deleteUserRolesByUid">
+        DELETE
+        FROM roles_user
+        WHERE uid = #{id}
+    </delete>
+    <insert id="setUserRoles">
+        INSERT INTO roles_user(rid,uid) VALUES
+        <foreach collection="rids" separator="," item="rid">
+            (#{rid},#{id})
+        </foreach>
+    </insert>
 </mapper>

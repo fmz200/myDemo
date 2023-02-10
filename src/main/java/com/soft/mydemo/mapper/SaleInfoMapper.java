@@ -1,11 +1,14 @@
 package com.soft.mydemo.mapper;
 
-import com.soft.mydemo.bean.SalesInfoBean;
+import com.soft.mydemo.bean.user.SalesInfoBean;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.beans.factory.annotation.Value;
+
+import java.util.List;
 
 @Mapper
 public interface SaleInfoMapper {
 
-    SalesInfoBean selectSales(@Value("saleId") String saleId);
+    SalesInfoBean querySalesInfoById(String saleId);
+
+    List<SalesInfoBean> querySalesInfoList(SalesInfoBean salesInfoParams);
 }

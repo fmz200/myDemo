@@ -2,12 +2,17 @@ package com.soft.mydemo.util;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.compress.utils.IOUtils;
 import org.thymeleaf.util.StringUtils;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -115,5 +120,35 @@ public class HttpRequest {
             }
         }
         return result.toString();
+    }
+
+    /**
+     * 根据地址获得数据的输入流
+     *
+     * @param strUrl 网络连接地址
+     * @return url的输入流
+     */
+    public static InputStream getInputStreamByUrl(String strUrl) {
+        HttpURLConnection conn = null;
+        try {
+            URL url = new URL(strUrl);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(20 * 1000);
+            final ByteArrayOutputStream output = new ByteArrayOutputStream();
+            IOUtils.copy(conn.getInputStream(), output);
+            return new ByteArrayInputStream(output.toByteArray());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.disconnect();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }
