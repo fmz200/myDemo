@@ -6,13 +6,18 @@ import ArticleList from '@/components/ArticleList'
 import CateMana from '@/components/CateMana'
 import DataCharts from '@/components/DataCharts'
 import PostArticle from '@/components/PostArticle'
-import UserMana from '@/components/UserMana'
+
 import BlogDetail from '@/components/BlogDetail'
 import FilesList from '@/components/FilesList'
 import FilesUpload from '@/components/FilesUpload'
+
 import WeiboHot from '@/components/hotSearch/WeiboHot'
 import DouyinHot from '@/components/hotSearch/DouyinHot'
 import DYHotDetail from '@/components/hotSearch/DYHotDetail'
+
+import UserMana from '@/components/user/UserMana'
+import SalesManager from '@/components/user/SalesManager'
+
 import SelfHome from '@/components/system/SelfHome'
 
 Vue.use(Router)
@@ -122,10 +127,15 @@ export default new Router({
     }, {
       path: '/home',
       component: Home,
-      name: '用户管理',
+      name: '人员管理',
       iconCls: 'fa fa-user-o',
       children: [
         {
+          path: '/sales',
+          iconCls: 'fa fa-user-o',
+          name: '人员管理',
+          component: SalesManager
+        }, {
           path: '/user',
           iconCls: 'fa fa-user-o',
           name: '用户管理',

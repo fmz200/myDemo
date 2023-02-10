@@ -74,9 +74,7 @@
   </div>
 </template>
 <script>
-import {getRequest} from '../utils/api'
-import {putRequest} from '../utils/api'
-import {deleteRequest} from '../utils/api'
+import {getRequest, putRequest, deleteRequest} from '../../utils/api'
 
 export default {
   mounted: function () {
